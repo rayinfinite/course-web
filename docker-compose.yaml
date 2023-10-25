@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+  course-web:
+    image: 642670655539.dkr.ecr.ap-southeast-1.amazonaws.com/course:course-web-latest
+    name: course-web
+    network_mode: host
+    environment:
+      PORT: 8080
+      WEBAPP_ENV.API_SERVER_URL: http://18.142.149.25
+      WEBAPP_ENV.APP_NAME: 选课系统
+    restart: always

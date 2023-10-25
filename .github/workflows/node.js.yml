@@ -7,6 +7,14 @@ on:
   push:
     branches: ["master"]
 
+env:
+  AWS_REGION: ap-southeast-1                      # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: course                          # set this to your Amazon ECR repository name
+  ECS_SERVICE: course-admin-server                     # set this to your Amazon ECS service name
+  ECS_CLUSTER: yourEcsCluster                     # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: yourTaskDefinitionFileName # set this to the path to your Amazon ECS task definition file, e.g. task-definition.json
+  CONTAINER_NAME: yourContainerName
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,3 +47,29 @@ jobs:
         run: pnpm install
       - name: Build Project
         run: pnpm build
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+      - name: Build, tag, and push image to Amazon ECR A
+        id: build-course-web-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+          PROJECT_NAME: course-web
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest 
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$PROJECT_NAME-latest" >> "$GITHUB_OUTPUT"
+      - name: AWS SSM Send-Command A
+        uses: peterkimzz/aws-ssm-send-command@master
+        id: deploy-course-web-ssm
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          instance-ids: ${{ secrets.INSTANCE_ID }}
+          working-directory: /home/course/course-web
+          command: |
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
