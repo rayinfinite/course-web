@@ -1,0 +1,28 @@
+{
+  "dataList": [
+    {
+      "sort": 1,
+      "department": "市工信局-人事科",
+      "capitalBudget": "1",
+      "capitalName": "1",
+      "capitalChildName": "1",
+      "projectName": "1",
+      "applyCompany": "1",
+      "invoiceCode": "1",
+      "invoiceAmount": 1.0,
+      "applyAmount": 1.0,
+      "uploadDetail": "2023年 3月17日-被市工信局-人事科专项录入查询过</br>2023年 3月17日-被市工信局-人事科专项录入查询过</br>"
+    }
+  ],
+  "reportCode": "CX000113",
+  "reportTime": "2023-03-17 17:55:23",
+  "printWidth": 100,
+  "singleQuote": true,
+  "semi": false,
+  "trailingComma": "none",
+  "bracketSameLine": true,
+  "vueIndentScriptAndStyle": true,
+  "endOfLine": "auto",
+  "singleAttributePerLine": true,
+  "htmlWhitespaceSensitivity": "strict"
+}

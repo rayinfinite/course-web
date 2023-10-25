@@ -1,0 +1,18 @@
+// 修改主题样式
+// .my-el-table-header-cell-name {
+//   color: #8F9299;
+//   height: 50px;
+//   background-color: #F2F6FC !important;
+// }
+
+.my-el-table-stripe-row-name {
+  &.el-table__row--striped {
+    .el-table__cell {
+      background: #F0F4FD !important;
+    }
+  }
+}
+.my-el-table-header-cell-name {
+  color: #fff;
+  background-color: #4584F8 !important;
+}
