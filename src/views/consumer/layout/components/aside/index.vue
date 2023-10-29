@@ -14,7 +14,11 @@
         <span>course model</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="/consumer/courseModule/courseManage">course manage</el-menu-item>
+        <el-menu-item index="/consumer/courseModule/course">course</el-menu-item>
+      </el-menu-item-group>
+
+      <el-menu-item-group>
+        <el-menu-item index="/consumer/courseModule/order">order</el-menu-item>
       </el-menu-item-group>
     </el-sub-menu>
   </el-menu>

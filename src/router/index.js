@@ -124,10 +124,17 @@ const routes = [
         component: () => import('@/views/teacher/courseModule/index.vue'),
         redirect: '/teacher/courseModule/courseManage',
         children: [
-          // 资金管理
+          // 课程管理
           {
             path: 'courseManage',
             component: () => import('@/views/teacher/courseModule/courseMange/index.vue'),
+            meta: {
+              routerName: 'courseModule-courseManage'
+            }
+          },
+          {
+            path: 'orderManage',
+            component: () => import('@/views/teacher/courseModule/orderManage/index.vue'),
             meta: {
               routerName: 'courseModule-courseManage'
             }
@@ -148,14 +155,21 @@ const routes = [
       {
         path: 'courseModule',
         component: () => import('@/views/consumer/courseModule/index.vue'),
-        redirect: '/consumer/courseModule/courseManage',
+        redirect: '/consumer/courseModule/course',
         children: [
-          // 资金管理
+          // 课程
           {
-            path: 'courseManage',
-            component: () => import('@/views/consumer/courseModule/courseMange/index.vue'),
+            path: 'course',
+            component: () => import('@/views/consumer/courseModule/course/index.vue'),
             meta: {
-              routerName: 'courseModule-courseManage'
+              routerName: 'courseModule-course'
+            }
+          },
+          {
+            path: 'order',
+            component: () => import('@/views/consumer/courseModule/order/index.vue'),
+            meta: {
+              routerName: 'courseModule-order'
             }
           }
         ]

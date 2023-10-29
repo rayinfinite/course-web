@@ -1,42 +1,27 @@
+import { adminCourseLis } from '@/apis';
 <template>
   <div
     ref="mainRef"
     class="tw-w-full tw-h-full tw-p-[20px]">
     <div ref="headerRef">
-      <el-title title="资金管理"></el-title>
+      <el-title title="MY ORDER"></el-title>
       <div class="tw-w-full tw-mt-[10px]">
         <el-form :model="formData">
           <el-row :gutter="20">
-            <el-col :span="6">
-              <el-form-item label="项目名称">
-                <el-input v-model="formData.keyword"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="审批状态">
-                <el-select
-                  v-model="formData.approveResult"
+            <el-col :span="12">
+              <el-form-item label="COURSE-NAME">
+                <el-input
+                  v-model="formData.keyword"
                   style="width: 100%">
-                  <el-option
-                    label="审批中"
-                    value="0">
-                  </el-option>
-                  <el-option
-                    label="审批成功"
-                    value="1">
-                  </el-option>
-                  <el-option
-                    label="审批失败"
-                    value="-1">
-                  </el-option>
-                </el-select>
+                </el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="8"></el-col>
             <el-col :span="4">
               <el-button
                 type="primary"
                 @click="onSearch">
-                查询
+                QUERY
               </el-button>
             </el-col>
           </el-row>
@@ -51,42 +36,27 @@
       header-cell-class-name="my-el-table-header-cell-name"
       stripe>
       <el-table-column
-        label="序号"
-        type="index"
-        :index="indexMethod"
-        width="100px">
-      </el-table-column>
-      <el-table-column
-        prop="projectName"
-        label="项目名称">
-      </el-table-column>
-      <el-table-column
-        prop="budgetCost"
-        label="项目预算(元)">
-      </el-table-column>
-      <el-table-column
-        prop="actualCost"
-        label="实际花费">
-      </el-table-column>
-      <el-table-column
-        prop="approveResult"
-        label="审批状态">
-        <template #default="{ row }">
-          <el-tag :type="approveStatus(row.approveResult).status.type">
-            {{ approveStatus(row.approveResult).status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
         prop="id"
-        label="资金Id">
+        label="CODE">
+      </el-table-column>
+      <el-table-column
+        prop="courseName"
+        label="COURSE_NAME">
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        label="ORDER_STATUS">
+      </el-table-column>
+      <el-table-column
+        prop="orderStatus"
+        label="ORDER_STATUS">
       </el-table-column>
       <el-table-column label="操作">
         <template #default="{ row }">
           <el-button
             type="primary"
-            @click="application(row)">
-            详情
+            @click="edit(row)">
+            DEATIL
           </el-button>
         </template>
       </el-table-column>
@@ -100,7 +70,7 @@
         large
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="onSizeChange"
-        @current-change="onSearch">
+        @current-change="onCurrentChange">
       </el-pagination>
     </div>
   </div>
@@ -108,52 +78,63 @@
 
 <script setup>
   import elTitle from '@/components/title/index.vue'
-  import { usePagination, approveStatus } from '@/utils/hooks'
-  import * as apis from '@/apis/index'
-  import { onMounted, ref } from 'vue'
-  import { ElMessage } from 'element-plus'
+  import { myCourseOrderList } from '@/apis/user.js'
+  import { onMounted, reactive, ref } from 'vue'
   import { useElementSize } from '@vueuse/core'
-  import router from '@/router'
-  const { pagination, indexMethod } = usePagination()
+  import { usePagination } from '@/utils/hooks.js'
+  const { pagination } = usePagination()
   const tableData = ref([])
-  const formData = ref({
+  const courseForm = reactive({
+    id: '',
+    courseName: '',
+    price: 0.0,
+    priceType: '',
+    fileIds: []
+  })
+  const formData = reactive({
     keyword: '',
-    approveResult: ''
+    roleId: ''
   })
   const mainRef = ref(null)
   const headerRef = ref(null)
   const { height: mainHeight } = useElementSize(mainRef)
   const { height: headerHeight } = useElementSize(headerRef)
-
   onMounted(() => {
     onSearch()
   })
+
+  // dialog开关
+  const isShow = ref(false)
   // 页面大小发生变化
   const onSizeChange = () => {
-    pagination.pageNumber = 1
+    onSearch()
+  }
+  // 当前页发生变化
+  const onCurrentChange = () => {
     onSearch()
   }
 
   const onSearch = () => {
-    apis
-      .getCapitalList({ ...formData.value, ...pagination })
+    myCourseOrderList({
+      ...pagination,
+      keyword: formData.keyword.trim(),
+      roleId: formData.roleId
+    })
       .then((res) => {
         if (res.data.code === 0) {
           const { records } = res.data.data
+          console.log(records)
           tableData.value = records
-        } else {
-          ElMessage.error(res.data.msg)
         }
       })
       .catch((err) => console.log(err))
   }
-  const application = (row) => {
-    router.push({
-      path: '/moneyDetail',
-      query: {
-        moneyId: row.id
-      }
-    })
+  const edit = (row) => {
+    courseForm.id = row.id
+    courseForm.courseName = row.courseName
+    courseForm.priceType = row.priceType === 0 ? '免费' : '付费'
+    courseForm.price = row.price
+    isShow.value = true
   }
 </script>
 

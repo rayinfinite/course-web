@@ -4,12 +4,12 @@ import { adminCourseLis } from '@/apis';
     ref="mainRef"
     class="tw-w-full tw-h-full tw-p-[20px]">
     <div ref="headerRef">
-      <el-title title="课程管理"></el-title>
+      <el-title title="COURSE"></el-title>
       <div class="tw-w-full tw-mt-[10px]">
         <el-form :model="formData">
           <el-row :gutter="20">
             <el-col :span="12">
-              <el-form-item label="课程名称">
+              <el-form-item label="COURSE-NAME">
                 <el-input
                   v-model="formData.keyword"
                   style="width: 100%">
@@ -38,33 +38,30 @@ import { adminCourseLis } from '@/apis';
       <el-table-column
         prop="id"
         :index="id"
-        label="编号">
+        label="CODE">
       </el-table-column>
       <el-table-column
         prop="courseName"
-        label="课程名称">
+        label="COURSE-NAME">
       </el-table-column>
       <el-table-column
         prop="priceType"
-        label="价格类型">
+        label="PRICE-TYPE">
         <template #default="{ row }">
           {{ row.priceType === 1 ? '付费' : '免费' }}
         </template>
       </el-table-column>
       <el-table-column
         prop="price"
-        label="价格">
+        label="PRICE">
       </el-table-column>
-      <el-table-column
-        prop="identityCode"
-        label="状态">
-      </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="CHOOSE COURSE">
         <template #default="{ row }">
           <el-button
+            v-if="row.orderId === null"
             type="primary"
             @click="edit(row)">
-            选课
+            DEATIL
           </el-button>
         </template>
       </el-table-column>
@@ -86,41 +83,7 @@ import { adminCourseLis } from '@/apis';
       title="Tips"
       width="30%"
       :before-close="handleClose">
-      <el-form
-        ref="FormRef"
-        :model="courseForm"
-        label-width="120px">
-        <el-form-item
-          prop="courseName"
-          label="课程名称">
-          <el-input v-model="courseForm.courseName"></el-input>
-        </el-form-item>
-        <el-form-item
-          prop="priceType"
-          label="价格类型">
-          <el-radio-group v-model="courseForm.priceType">
-            <el-radio label="免费"></el-radio>
-            <el-radio label="付费"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item
-          prop="priceType"
-          label="价格">
-          <el-input v-model="courseForm.price"></el-input>
-        </el-form-item>
-        <el-form-item
-          prop="photo"
-          label="文件">
-          <el-upload
-            ref="uploadRef"
-            v-model:file-list="courseForm.fileIds"
-            :action="uploadUrl"
-            list-type="picture-card"
-            :on-exceed="onExceed">
-            <el-icon><Plus></Plus></el-icon>
-          </el-upload>
-        </el-form-item>
-      </el-form>
+      ARE SURE CHOOSE THIS COURSE!!!
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="isShow = false">Cancel</el-button>
@@ -137,28 +100,20 @@ import { adminCourseLis } from '@/apis';
 
 <script setup>
   import elTitle from '@/components/title/index.vue'
-  import * as apis from '@/apis/index.js'
-  import { uploadUrl, adminCourseCreate, adminUpdateCourse } from '@/apis/index.js'
+  import { userCourseList, chooseCourse } from '@/apis/user.js'
   import { onMounted, reactive, ref } from 'vue'
   import { useElementSize } from '@vueuse/core'
   import { usePagination } from '@/utils/hooks.js'
   import { ElMessage } from 'element-plus'
   const { pagination } = usePagination()
   const tableData = ref([])
-  const courseForm = reactive({
-    id: '',
-    courseName: '',
-    price: 0.0,
-    priceType: '',
-    fileIds: []
+  const orderForm = reactive({
+    courseId: ''
   })
-  const FormRef = ref(null)
   const formData = reactive({
     keyword: '',
     roleId: ''
   })
-  const roles = ref([])
-
   const mainRef = ref(null)
   const headerRef = ref(null)
   const { height: mainHeight } = useElementSize(mainRef)
@@ -179,12 +134,11 @@ import { adminCourseLis } from '@/apis';
   }
 
   const onSearch = () => {
-    apis
-      .adminCourseLis({
-        ...pagination,
-        keyword: formData.keyword.trim(),
-        roleId: formData.roleId
-      })
+    userCourseList({
+      ...pagination,
+      keyword: formData.keyword.trim(),
+      roleId: formData.roleId
+    })
       .then((res) => {
         if (res.data.code === 0) {
           const { records } = res.data.data
@@ -194,68 +148,20 @@ import { adminCourseLis } from '@/apis';
       .catch((err) => console.log(err))
   }
   const edit = (row) => {
-    courseForm.id = row.id
-    courseForm.courseName = row.courseName
-    courseForm.priceType = row.priceType === 0 ? '免费' : '付费'
-    courseForm.price = row.price
+    orderForm.courseId = row.id
     isShow.value = true
   }
 
   const modifyComfirm = () => {
-    FormRef.value.validate((valid) => {
-      if (!valid) {
-        return
-      }
-      if (courseForm.id === '') {
-        adminCourseCreate({
-          priceType: courseForm.priceType === '免费' ? 0 : 1,
-          courseName: courseForm.courseName,
-          price: courseForm.price,
-          fileIds: courseForm.fileIds.map((fileInfo) => fileInfo.response.id)
-        })
-          .then((res) => {
-            if (res.data.code === 0) {
-              ElMessage.success('发布成功')
-              isShow.value = false
-            } else {
-              ElMessage.error(res.data.msg)
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-            ElMessage.error(err)
-          })
-          .finally(() => {
-            isShow.value = false
-          })
-      } else {
-        adminUpdateCourse({
-          id: courseForm.id,
-          courseName: courseForm.courseName,
-          price: courseForm.price,
-          printType: courseForm.priceType,
-          fileIds: courseForm.fileIds.map((fileInfo) => fileInfo.response.id)
-        })
-          .then((res) => {
-            if (res.data.code === 0) {
-              ElMessage.success('修改成功')
-              isShow.value = false
-            } else {
-              ElMessage.error(res.data.msg)
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-            ElMessage.error(err)
-          })
-          .finally(() => {
-            isShow.value = false
-          })
-      }
-    })
-  }
-  const onAdd = () => {
-    isShow.value = true
+    if (orderForm.courseId !== '') {
+      chooseCourse({ courseId: orderForm.courseId }).then((res) => {
+        if (res.code === 0) {
+          ElMessage.success('选课成功！')
+        }
+        isShow.value = false
+        onSearch()
+      })
+    }
   }
 </script>
 

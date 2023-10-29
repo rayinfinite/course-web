@@ -4,7 +4,7 @@ import { adminCourseLis } from '@/apis';
     ref="mainRef"
     class="tw-w-full tw-h-full tw-p-[20px]">
     <div ref="headerRef">
-      <el-title title="课程管理"></el-title>
+      <el-title title="order manage"></el-title>
       <div class="tw-w-full tw-mt-[10px]">
         <el-form :model="formData">
           <el-row :gutter="20">
@@ -239,7 +239,6 @@ import { adminCourseLis } from '@/apis';
             if (res.data.code === 0) {
               ElMessage.success('发布成功')
               isShow.value = false
-              onSearch()
             } else {
               ElMessage.error(res.data.msg)
             }

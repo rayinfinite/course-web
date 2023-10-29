@@ -16,6 +16,9 @@
       <el-menu-item-group>
         <el-menu-item index="/teacher/courseModule/courseManage">course manage</el-menu-item>
       </el-menu-item-group>
+      <el-menu-item-group>
+        <el-menu-item index="/teacher/courseModule/orderManage">order manage</el-menu-item>
+      </el-menu-item-group>
     </el-sub-menu>
   </el-menu>
 </template>
