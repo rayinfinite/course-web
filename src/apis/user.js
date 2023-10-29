@@ -23,3 +23,17 @@ export const chooseCourse = (data) =>
  */
 export const myCourseOrderList = (data) =>
   get(`/course-consumer-order-api/api/v1/consumer/order/list`, data)
+
+/**
+ * 订单详情
+ * @param {*} data
+ * @returns
+ */
+export const orderDetail = (orderId) =>
+  get(`/course-consumer-order-api/api/v1/order/detail/${orderId}`)
+/**
+ * 所有订单
+ * @param {*} data
+ * @returns
+ */
+export const teacherOrderList = (data) => get(`/course-consumer-order-api/api/v1/order/list`, data)

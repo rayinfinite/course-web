@@ -4,34 +4,24 @@ import { adminCourseLis } from '@/apis';
     ref="mainRef"
     class="tw-w-full tw-h-full tw-p-[20px]">
     <div ref="headerRef">
-      <el-title title="课程管理"></el-title>
+      <el-title title="COURSE-MANAGE"></el-title>
       <div class="tw-w-full tw-mt-[10px]">
         <el-form :model="formData">
           <el-row :gutter="20">
             <el-col :span="6">
-              <el-form-item label="课程名称">
+              <el-form-item label="COURSE_NAME">
                 <el-input
                   v-model="formData.keyword"
                   style="width: 100%">
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
-              <el-form-item label="用户职位">
-                <el-select v-model="formData.roleId">
-                  <el-option
-                    v-for="item in roles"
-                    :key="item.id"
-                    :label="item.roleName"
-                    :value="item.id">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+            <el-col :span="6"> </el-col>
             <el-col :span="8"></el-col>
             <el-col :span="4">
               <el-button
                 type="primary"
+                s
                 @click="onSearch">
                 查询
               </el-button>

@@ -8,8 +8,7 @@ export const usePagination = () => {
   // 分页对象
   const pagination = reactive({
     pageSize: 10,
-    pageNumber: 1,
-    total: 0
+    pageNumber: 1
   })
   // 序号函数
   const indexMethod = (index) => {

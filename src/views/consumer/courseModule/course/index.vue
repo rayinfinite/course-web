@@ -37,7 +37,7 @@ import { adminCourseLis } from '@/apis';
       stripe>
       <el-table-column
         prop="id"
-        :index="id"
+        type="index"
         label="CODE">
       </el-table-column>
       <el-table-column
@@ -143,6 +143,8 @@ import { adminCourseLis } from '@/apis';
         if (res.data.code === 0) {
           const { records } = res.data.data
           tableData.value = records
+        } else {
+          ElMessage.error(res.data.msg)
         }
       })
       .catch((err) => console.log(err))

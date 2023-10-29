@@ -61,29 +61,6 @@ const routes = [
         ]
       },
       // 审批模块
-      {
-        path: 'approvalModule',
-        component: () => import('@/views/admin/approvalModule/index.vue'),
-        redirect: '/admin/approvalModule/projectProcess',
-        children: [
-          // 项目审批
-          {
-            path: 'projectProcess',
-            component: () => import('@/views/admin/approvalModule/projectProcess/index.vue'),
-            meta: {
-              routerName: '审批模块-项目审批'
-            }
-          },
-          // 资金审批
-          {
-            path: 'moneyProcess',
-            component: () => import('@/views/admin/approvalModule/moneyProcess/index.vue'),
-            meta: {
-              routerName: '审批模块-资金审批'
-            }
-          }
-        ]
-      },
       // 系统管理
       {
         path: 'system',
@@ -142,6 +119,13 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    path: '/orderDetail',
+    component: () => import('@/views/orderDetail/index.vue'),
+    meta: {
+      routerName: 'courseModule-orderDetail'
+    }
   },
   {
     path: '/consumer',
