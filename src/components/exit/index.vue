@@ -7,11 +7,11 @@
     <div class="info">
       <div class="item">
         <el-icon :size="20"><Avatar></Avatar></el-icon>
-        <p>{{ userInfo?.userInfo?.user?.realName || '' }}</p>
+        <p>{{ userInfo?.userInfo?.displayName || '' }}</p>
       </div>
       <div class="item">
         <el-icon :size="20"><Promotion></Promotion></el-icon>
-        <p>{{ userInfo?.userInfo?.user?.mobile || '' }}</p>
+        <p>{{ userInfo?.userInfo?.mobile || '' }}</p>
       </div>
     </div>
     <div class="btn">
@@ -79,7 +79,7 @@
     router.push({
       name: 'userInfo',
       query: {
-        userId: userInfo.userInfo.user.id
+        userId: userInfo.userInfo.id
       }
     })
   }

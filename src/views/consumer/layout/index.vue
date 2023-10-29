@@ -11,10 +11,7 @@
     <div class="cool tw-w-[45px] tw-h-[45px] tw-rounded-[50%] tw-mr-[80px] tw-cursor-pointer">
       <img
         class="tw-w-full tw-h-full tw-rounded-[50%]"
-        :src="
-          userInfo?.userInfo?.avatarUrl ||
-          'http://18.142.149.25/course-login-api/api/v1/file/451295543514365952'
-        "
+        :src="userInfo?.userInfo?.user?.avatarUrl || '@/assets/image/cool/01.png'"
         alt=""
         @mouseenter="exit = true"
         @mouseleave="exit = false" />
@@ -51,7 +48,6 @@
   const userInfo = useUserStore()
   const route = useRoute()
   const currentRouter = computed(() => {
-    console.log(route.meta.routerName)
     return route.meta.routerName.split('-')
   })
   const exit = ref(false)

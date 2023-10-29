@@ -157,7 +157,7 @@
     router.back()
   }
   const getUserInfo = () => {
-    apis.getUserInfo(route.query.userId).then((res) => {
+    apis.getUserInfo().then((res) => {
       if (res.data.code === 0) {
         const { user, role } = res.data.data
         userInfo.value = user

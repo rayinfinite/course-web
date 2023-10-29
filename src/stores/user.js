@@ -7,11 +7,11 @@ export const useUserStore = defineStore('user', {
   }),
   getters: {
     getUserRole: (state) => {
-      if (state.userInfo) {
-        const { sysRole } = state.userInfo
+      if (state) {
+        const { sysRole } = state
         if (sysRole) {
           // 暂时先给管理员
-          return sysRole.roleName
+          return sysRole.roleCode
         }
       } else {
         return null
@@ -24,8 +24,7 @@ export const useUserStore = defineStore('user', {
       this.userInfo = data
     },
     setUserRole(role) {
-      console.log(role)
-      this.userRole = role
+      this.role = role
       localStorage.setItem('role', role)
     },
     async getUserInfo() {

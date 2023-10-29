@@ -7,8 +7,7 @@
           src="@/assets/image/logo_login.png"
           alt="" />
         <div class="title tw-h-full">
-          <p class="chinese">城建企业项目管理系统</p>
-          <p class="english"> City Construction Management System </p>
+          <p class="chinese">COURSE MANAGEMENT SYSTEM</p>
         </div>
       </div>
       <div class="login_bg_image">
@@ -20,7 +19,7 @@
     <div class="box">
       <div class="login_form">
         <div class="login_form_title">
-          <p>用户登录<span>USER LOGIN</span></p>
+          <p>USER LOGIN</p>
         </div>
         <div class="login_form_main">
           <el-form
@@ -31,36 +30,36 @@
             label-position="top">
             <el-form-item
               prop="username"
-              label="用户名称">
+              label="username">
               <el-input
                 v-model="form.username"
                 style="height: 64px"
-                placeholder="请输入用户名称">
+                placeholder="please int put usernam">
               </el-input>
             </el-form-item>
             <el-form-item
               prop="password"
-              label="密码">
+              label="password">
               <el-input
                 v-model="form.password"
                 type="password"
                 :show-password="true"
                 style="height: 64px"
-                placeholder="请输入登录密码">
+                placeholder="pleas int put password">
               </el-input>
             </el-form-item>
             <el-form-item>
               <div class="tw-flex tw-justify-between tw-w-full">
                 <el-checkbox
                   v-model="form.check"
-                  label="记住密码">
+                  label="remeber me">
                 </el-checkbox>
                 <el-button
                   class="tw-p-0"
                   text
                   type="primary"
                   @click="router.push('/register')">
-                  用户注册
+                  user register
                 </el-button>
               </div>
             </el-form-item>
@@ -70,7 +69,7 @@
                 style="width: 100%; height: 64px; font-size: 16px"
                 :loading="btnLoading"
                 @click="handelLogin">
-                登录
+                LOGIN
               </el-button>
             </el-form-item>
           </el-form>
@@ -79,7 +78,7 @@
           <span
             class="tw-text-[16px] tw-text-[#2C73EB] tw-cursor-pointer"
             @click="router.push('/getBack')">
-            忘记密码
+            FORGET PASSWORD
           </span>
         </div>
       </div>

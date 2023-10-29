@@ -5,7 +5,7 @@ export const uploadUrl = `${import.meta.env.VITE_API_BASE_URL}/course-login-api/
 /**
  * 获取用户信息
  */
-export const getUserInfo = (userId) => get(`/course-login-api/api/v1/sysUser/detail/${userId}`)
+export const getUserInfo = () => get(`/course-login-api/api/v1/account/userInfo`)
 /**
  * 修改个人信息
  */
@@ -68,7 +68,7 @@ export const editRole = (data) => put(`/course-admin-api/api/v1/sysRole/${data.i
  * @param {*} data
  * 修改用户职位
  */
-export const updateRole = (data) => put('/api/v1/sysUser/modify/role', data)
+export const updateRole = (data) => put('/course-admin-api/api/v1/sysUser/modify/role', data)
 /** 用户模块 */
 //#region
 /**
