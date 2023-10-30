@@ -7,12 +7,16 @@ const routes = [
   {
     path: '/',
     redirect: () => {
+      const role = user?.userInfo?.sysRole?.roleCode
+      if (role === undefined) {
+        return 'login'
+      }
       return (
         {
           [ROLER.admin]: '/admin',
           [ROLER.teacher]: '/teacher',
           [ROLER.consumer]: '/consumer'
-        }[user.userInfo.sysRole.roleCode] || '/admin'
+        }[role] || '/admin'
       )
     }
   },
@@ -157,6 +161,10 @@ const routes = [
             }
           }
         ]
+      },
+      {
+        path: 'home',
+        component: () => import('@/views/mainpage/index.vue')
       }
     ]
   }
@@ -170,13 +178,15 @@ const router = createRouter({
 })
 
 // eslint-disable-next-line no-unused-vars
-// router.beforeEach((to, from) => {
-//   if (to.matched.some((record) => record.meta.requireAuth)) {
-//     const token = localStorage.getItem('token')
-//     if (!token) {
-//       return '/login'
-//     }
-//   }
-// })
+router.beforeEach((to, from) => {
+  if (to.matched.some((record) => record.meta.requireAuth)) {
+    const token = localStorage.getItem('token')
+    console.log(token)
+    console.log('abc')
+    if (!token) {
+      return '/login'
+    }
+  }
+})
 
 export default router

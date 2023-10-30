@@ -12,7 +12,7 @@ module.exports = {
     'vue/multiline-html-element-content-newline': ['error', { ignoreWhenEmpty: false }],
     'vue/html-closing-bracket-newline': ['error', { multiline: 'never' }],
     'vue/html-self-closing': [
-      'error',
+      'off',
       {
         html: {
           void: 'always',

@@ -48,7 +48,7 @@
   const userInfo = useUserStore()
   const route = useRoute()
   const currentRouter = computed(() => {
-    return route.meta.routerName.split('-')
+    return route.meta.routerName?.split('-')
   })
   const exit = ref(false)
 </script>
