@@ -4,8 +4,9 @@
       v-for="item in tableData"
       :key="item.id"
       class="goods">
-      <!-- {{ item }} -->
-      <div class="goods-item suspension">
+      <div
+        class="goods-item suspension"
+        @click="emit('openDialog', item)">
         <el-image
           v-if="item.logo"
           loading="lazy"
@@ -18,15 +19,15 @@
           :style="{ backgroundColor: stringToColor(item.id) }" />
         <div class="goods-footer">
           <!-- <div
-          v-if="item.tags && item.tags.length > 0"
-          class="goods-tag">
-          <el-tag
-            v-for="(tag, idx) in item.tags"
-            :key="idx"
-            :type="tag.type">
-            {{ tag.name }}
-          </el-tag>
-        </div> -->
+            v-if="item.tags && item.tags.length > 0"
+            class="goods-tag">
+            <el-tag
+              v-for="(tag, idx) in item.tags"
+              :key="idx"
+              :type="tag.type">
+              {{ tag.name }}
+            </el-tag>
+          </div> -->
           <div class="goods-title">
             {{ item.courseName }}
           </div>
@@ -37,115 +38,54 @@
             </span>
             <el-button
               class="goods-price"
-              link
-              @click="console.log(item.id)">
+              link>
               <el-icon><ShoppingCart /></el-icon>
               <span class="current-price">{{ item.price }}</span>
             </el-button>
           </div>
         </div>
       </div>
-      <!-- <div
-      class="goods-item suspension"
-      @click="showInfo(item.id)">
-      <el-image
-        loading="lazy"
-        fit="contain"
-        class="goods-img"
-        :src="item.logo ? item.logo : fullUrl('/static/images/local-module-logo.png')">
-      </el-image>
-      <div class="goods-footer">
-        <div
-          v-if="item.tags && item.tags.length > 0"
-          class="goods-tag">
-          <el-tag
-            v-for="(tag, idx) in item.tags"
-            :key="idx"
-            :type="tag.type">
-            {{ tag.name }}
-          </el-tag>
-        </div>
-        <div class="goods-title">
-          {{ item.title }}
-        </div>
-        <div class="goods-data">
-          <span class="download-count">
-            <Icon
-              name="fa fa-download"
-              color="#c0c4cc"
-              size="13"></Icon>
-            {{ item.downloads ? item.downloads : '-' }}
-          </span>
-          <span class="goods-price">
-            <span class="original-price">{{
-              currency(item.original_price, item.currency_select)
-            }}</span>
-            <span class="current-price">{{
-              currency(item.present_price, item.currency_select)
-            }}</span>
-          </span>
-          <div class="goods-price">
-            <el-tag
-              effect="dark"
-              :type="item.stateTag.type">
-              {{ item.stateTag.text }}
-            </el-tag>
-          </div>
-        </div>
-      </div>
-    </div> -->
     </div>
   </div>
+  <el-pagination
+    v-model:currentPage="pagination.currentPage"
+    v-model:page-size="pagination.pageSize"
+    :total="pagination.total"
+    :page-sizes="[10, 20, 40, 60]"
+    large
+    layout="total, sizes, prev, pager, next, jumper"
+    @size-change="emit('onSearch', pagination)"
+    @current-change="emit('onSearch', pagination)" />
 </template>
 
 <script setup>
-  import * as apis from '@/apis/index'
-  import { onMounted, reactive, ref } from 'vue'
   import { usePagination } from '@/utils/hooks'
-  import { ElMessage } from 'element-plus'
-  import { get, post, put, remove } from '@/apis/config'
+  import { onMounted } from 'vue'
 
-  const formData = reactive({
-    roleName: ''
+  defineProps({
+    tableData: {
+      type: Array,
+      default: () => []
+    }
   })
-  const tableData = ref([])
+
+  const emit = defineEmits(['onSearch', 'openDialog'])
+
   const { pagination } = usePagination()
+  // pagination.pageSize = 50
 
   onMounted(async () => {
-    onSearch()
-    const data = await List()
-    console.log(data)
+    emit('onSearch', pagination)
   })
 
-  const List = (data) => get(`/course-admin-api/api/v1/consumer/order/list`, data)
-
-  const onSearch = () => {
-    apis
-      .adminCourseLis({
-        ...pagination,
-        roleName: formData.roleName.trim()
-      })
-      .then((res) => {
-        if (res.data.code == 0) {
-          const { records, total } = res.data.data
-          tableData.value = records
-          pagination.total = total
-        } else {
-          ElMessage.error(res.data.msg)
-        }
-      })
-      .catch((err) => console.log(err))
-  }
   const stringToColor = (str) => {
     // 将字符串转换为哈希码
     let hash = 0
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash)
     }
-
     // 生成颜色
     const color = '#' + (hash & 0x00ffffff).toString(16).slice(-6)
-
     return color
   }
 </script>

@@ -159,12 +159,16 @@ const routes = [
             meta: {
               routerName: 'courseModule-order'
             }
+          },
+          {
+            path: 'home',
+            component: () => import('@/views//consumer/courseModule/mainpage/index.vue')
+          },
+          {
+            path: 'taken',
+            component: () => import('@/views//consumer/courseModule/mainpage/course.vue')
           }
         ]
-      },
-      {
-        path: 'home',
-        component: () => import('@/views/mainpage/index.vue')
       }
     ]
   }
@@ -178,11 +182,15 @@ const router = createRouter({
 })
 
 // eslint-disable-next-line no-unused-vars
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
+  if (to.path === '/login') {
+    return true
+  }
+  if (await user.getUserInfo()) {
+    return '/login'
+  }
   if (to.matched.some((record) => record.meta.requireAuth)) {
     const token = localStorage.getItem('token')
-    console.log(token)
-    console.log('abc')
     if (!token) {
       return '/login'
     }

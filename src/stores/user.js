@@ -28,15 +28,16 @@ export const useUserStore = defineStore('user', {
       localStorage.setItem('role', role)
     },
     async getUserInfo() {
-      let res
       try {
-        res = await getUserInfo()
+        const res = await getUserInfo()
         if (res.data.code === 0) {
           this.userInfo = res.data.data
         }
       } catch (error) {
         console.log(error)
+        return true
       }
+      return false
     }
   }
 })

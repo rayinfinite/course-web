@@ -14,7 +14,10 @@
         <span>course model</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="/consumer/home">home</el-menu-item>
+        <el-menu-item index="/consumer/courseModule/home">home</el-menu-item>
+      </el-menu-item-group>
+      <el-menu-item-group>
+        <el-menu-item index="/consumer/courseModule/taken">taken</el-menu-item>
       </el-menu-item-group>
 
       <el-menu-item-group>
